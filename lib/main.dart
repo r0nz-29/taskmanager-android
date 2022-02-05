@@ -52,7 +52,7 @@ class GradientText extends StatelessWidget {
 
 class _MyAppState extends State<MyApp> {
   int count = 0;
-  final BASE = "https://todo-server-redux.herokuapp.com/todos";
+  final BASE = "insert your backend url here";
   final _formKey = GlobalKey<FormState>();
   final newTaskController = TextEditingController();
   final paperColor = const Color(0xff111111);
@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
   List<Todo> _todos = [];
 
   void getTodos() async {
-    final resp = await http.get(Uri.parse(BASE + "/get_todos"));
+    final resp = await http.get(Uri.parse(BASE + "/route"));
     var jsonData = json.decode(resp.body);
 
     List<Todo> todos = [];
@@ -94,9 +94,9 @@ class _MyAppState extends State<MyApp> {
 
     var url;
     if (operation == "mark as done") {
-      url = BASE + '/mark_as_done';
+      url = BASE + '/route';
     } else if (operation == "delete") {
-      url = BASE + '/remove_todo';
+      url = BASE + '/route';
     }
     final resp = await http.post(
       Uri.parse(url),
@@ -127,7 +127,7 @@ class _MyAppState extends State<MyApp> {
 
   void addNewTask(String newTask) async {
     final resp = await http.post(
-      Uri.parse(BASE + '/add_todo'),
+      Uri.parse(BASE + '/route'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
