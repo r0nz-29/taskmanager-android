@@ -1,261 +1,285 @@
+// ignore_for_file: unnecessary_const, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(MaterialApp(
-    home: Home(),
-  ));
+  runApp(MyApp());
 }
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class Todo {
+  final String title;
+  final String status;
+  final String id;
+  bool isProcessing;
+
+  Todo(
+      {required this.id,
+      required this.title,
+      required this.status,
+      required this.isProcessing});
+}
+
+class GradientText extends StatelessWidget {
+  const GradientText(
+    this.text, {
+    required this.gradient,
+    this.style,
+  });
+
+  final String text;
+  final TextStyle? style;
+  final Gradient gradient;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Container(
-          child: Row(
-            children: [
-              Container(
-                child: Expanded(
-                  child: CircleAvatar(
-                    radius: 15.0,
-                    backgroundColor: Colors.blue[50],
-                    child: Image.asset('images/image (2).png'),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 260,
-              ),
-              Container(
-                width: 0.0,
-                child: CircleAvatar(
-                  radius: 25.0,
-                  backgroundColor: Colors.indigo[50],
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.notifications,
-                      color: Colors.blue[900],
-                      size: 25.0,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 90,
-              ),
-              Container(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                    size: 25.0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+    return ShaderMask(
+      blendMode: BlendMode.srcIn,
+      shaderCallback: (bounds) => gradient.createShader(
+        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                25,
-                10,
-                0,
-                0,
-              ),
-              child: Text(
-                'Hello !',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.yellow[600],
-                  fontSize: 35.0,
-                  fontFamily: 'PublicSans',
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(25, 10, 0, 0),
-              child: Row(
-                children: [
-                  Text(
-                    'Select & Start ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900,
-                      fontFamily: 'PublicSans',
-                      fontSize: 30.0,
-                    ),
-                  ),
-                  Text(
-                    'Searching ',
-                    style: TextStyle(
-                      color: Colors.yellow[600],
-                      fontWeight: FontWeight.w900,
-                      fontFamily: 'PublicSans',
-                      fontSize: 30.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Container(
-              child: Row(
-                children: [
-                  Container(
-                    child: MyStatefulWidget(),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: TextField(
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.blueAccent,
-                        ),
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.search),
-                          hintText: "Search supplier",
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 32.0),
-                              borderRadius: BorderRadius.circular(25.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 32.0),
-                              borderRadius: BorderRadius.circular(8.0)),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Icon(
-                    Icons.location_on,
-                    color: Colors.yellow[600],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 100,
-            ),
-            Container(
-              width: 600,
-              height: 40,
-              child: Card(
-                color: Colors.grey[300],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(
-                    color: Colors.grey.withOpacity(0.2),
-                    width: 1,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(85, 0, 10, 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          color: Colors.blue[800],
-                          width: 100,
-                          height: 40,
-                          child: ElevatedButton.icon(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.home,
-                                color: Colors.yellow[600],
-                              ),
-                              label: Text(
-                                'HOME',
-                                style: TextStyle(color: Colors.yellow[600]),
-                              ))),
-                      SizedBox(
-                        width: 30.0,
-                      ),
-                      Expanded(
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.white,
-                          child: Icon(Icons.navigation),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 30.0,
-                      ),
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.location_city),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      child: Text(text, style: style),
     );
   }
 }
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+  int count = 0;
+  final BASE = "https://todo-server-redux.herokuapp.com/todos";
+  final _formKey = GlobalKey<FormState>();
+  final newTaskController = TextEditingController();
+  final paperColor = const Color(0xff111111);
+  final awesomeGradient = LinearGradient(
+      begin: Alignment.bottomLeft,
+      end: Alignment.topRight,
+      colors: [
+        Color(0xff57048A),
+        Color(0xff4528DC),
+      ]);
+
+  List<Todo> _todos = [];
+
+  void getTodos() async {
+    final resp = await http.get(Uri.parse(BASE + "/get_todos"));
+    var jsonData = json.decode(resp.body);
+
+    List<Todo> todos = [];
+    for (var todo in jsonData) {
+      Todo t = Todo(
+        id: todo["_id"],
+        title: todo["content"],
+        status: todo["status"],
+        isProcessing: false,
+      );
+      if (t.status == "pending") {
+        todos.add(t);
+      }
+    }
+    setState(() {
+      _todos = todos;
+    });
+  }
+
+  void handleTodo(Todo currentTodo, String operation) async {
+    setState(() {
+      currentTodo.isProcessing = true;
+    });
+
+    var url;
+    if (operation == "mark as done") {
+      url = BASE + '/mark_as_done';
+    } else if (operation == "delete") {
+      url = BASE + '/remove_todo';
+    }
+    final resp = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'id': currentTodo.id,
+      }),
+    );
+
+    final updatedTodos = json.decode(resp.body);
+    // print(updatedTodos.toString());
+    List<Todo> todos = [];
+    for (var todo in updatedTodos) {
+      Todo t = Todo(
+        id: todo["_id"],
+        title: todo["content"],
+        status: todo["status"],
+        isProcessing: false,
+      );
+      if (t.status == "pending") todos.add(t);
+    }
+    setState(() {
+      _todos = todos;
+    });
+  }
+
+  void addNewTask(String newTask) async {
+    final resp = await http.post(
+      Uri.parse(BASE + '/add_todo'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'content': newTask,
+        'status': 'pending',
+      }),
+    );
+    final updatedTodos = json.decode(resp.body);
+    // print(updatedTodos.toString());
+    List<Todo> todos = [];
+    for (var todo in updatedTodos) {
+      Todo t = Todo(
+        id: todo["_id"],
+        title: todo["content"],
+        status: todo["status"],
+        isProcessing: false,
+      );
+      if (t.status == "pending") todos.add(t);
+    }
+    setState(() {
+      _todos = todos;
+    });
+  }
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  String dropdownValue = 'Select';
+  void initState() {
+    super.initState();
+    getTodos();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      elevation: 33,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 5,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownValue = newValue!;
-        });
-      },
-      items: <String>['Select', 'Supplier', 'Company', 'Medicine & product']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
+    return MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        ),
+        themeMode: ThemeMode.dark,
+        home: Scaffold(
+          backgroundColor: const Color(0xff09080d),
+          appBar: AppBar(
+            foregroundColor: Colors.white,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(gradient: awesomeGradient),
+            ),
+            title: Text(
+              'Pending Tasks',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: paperColor,
+          ),
+          drawer: Drawer(
+              backgroundColor: paperColor,
+              child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Form(
+                      key: _formKey,
+                      child: ListView(
+                        children: [
+                          TextFormField(
+                            // The validator receives the text that the user has entered.
+                            decoration:
+                                const InputDecoration(labelText: 'New Task'),
+                            controller: newTaskController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                addNewTask(newTaskController.text);
+                              }
+                            },
+                            child: Text('Add task'),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color(0xff57048A)),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 16.0)),
+                                textStyle: MaterialStateProperty.all(
+                                    TextStyle(fontSize: 24))),
+                          )
+                        ],
+                      )))),
+          body: Container(
+            padding: EdgeInsets.all(10.0),
+            margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+            child: _todos.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView(
+                    children: _todos.reversed
+                        .toList()
+                        .map((todo) => Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 0.0, vertical: 5.0),
+                              child: Card(
+                                  color: paperColor,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: ListTile(
+                                      leading: todo.isProcessing
+                                          ? SizedBox(
+                                              height: 20.0,
+                                              width: 20.0,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2.0,
+                                              ),
+                                            )
+                                          : null,
+                                      title: Text(todo.title),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                handleTodo(
+                                                    todo, 'mark as done');
+                                              },
+                                              icon: Icon(
+                                                Icons.check,
+                                                color: const Color(0xff4528DC),
+                                              )),
+                                          IconButton(
+                                              onPressed: () {
+                                                handleTodo(todo, 'delete');
+                                              },
+                                              icon: Icon(
+                                                Icons.delete,
+                                                color: Colors.grey[900],
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  )),
+                            ))
+                        .toList()),
+          ),
+        ));
   }
 }
